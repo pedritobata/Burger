@@ -31,7 +31,8 @@ class BurgerBuilder extends Component{
            meat:0 
         },
         totalPrice: 4,
-        purchaseable: false
+        purchaseable: false,
+        purchasing : false
     }
 
     updatePurchaseState(ingredients){
@@ -76,6 +77,22 @@ class BurgerBuilder extends Component{
         this.updatePurchaseState(updatedIngredients);
     }
 
+    //Usamos Arrowfunction para todos los metodos que se invocarán al dispararse algun evento en el html
+    //Si usamos funciones normales, el this no puede hacer referencia a la clase en la que estamos y nos arrojaria error
+    //porque setState estaría tratando de acceder a un objeto Undefined
+    //En arrow functions, ellas sí guardan el contexo en el this!!
+    purchaseHandler = () => {
+        this.setState({purchasing:true});
+    }
+
+    purchaseCancelHandler = () => {
+        this.setState({purchasing:false})
+    }
+
+    purchaseContinueHandler = () => {
+        alert('You continue!!');
+    }
+
 
     render(){
 
@@ -89,8 +106,12 @@ class BurgerBuilder extends Component{
 
         return (
             <Aux>
-                <Modal>
-                    <OrderSummary ingredients={this.state.ingredients} />
+                <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
+                    <OrderSummary 
+                        price={this.state.totalPrice}
+                        purchaseCancelled={this.purchaseCancelHandler}
+                        purchaseContinued={this.purchaseContinueHandler}
+                        ingredients={this.state.ingredients} />
                 </Modal>
                <Burger  ingredients={this.state.ingredients}/>
                 <BuildControls 
@@ -98,6 +119,7 @@ class BurgerBuilder extends Component{
                    ingredientRemoved={this.removeIngredientHandler}
                    disabled = {disabledInfo}
                    purchaseable={this.state.purchaseable}
+                   ordered={this.purchaseHandler}
                    price={this.state.totalPrice}
                 />
             </Aux>
