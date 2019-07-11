@@ -10,7 +10,7 @@ class Modal extends Component{
   shouldComponentUpdate(nextProps, nextState){
      //trataremos de hacer que el modal no se actualice cuando no se esté visualizando
      //ya que no tiene sentido
-    return nextProps.show !== this.props.show;
+    return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
   }
 
   componentWillUpdate(){
@@ -21,7 +21,7 @@ class Modal extends Component{
 
     return(
       <Aux>
-      <Backdrop show={this.props.show} clicked={this.props.modalClosed}/>
+      <Backdrop show={this.props.show}  clicked={this.props.modalClosed}/>
    
        <div className={classes.Modal}
           style={{
