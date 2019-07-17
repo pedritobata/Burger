@@ -107,7 +107,7 @@ class BurgerBuilder extends Component{
         //alert('You continue!!');
         //Firebase usa una BD tipo MongoDB
         //para firebase el recurso o nodo se define con un nombre seguido del .json!
-        this.setState({loading:true});
+        /* this.setState({loading:true});
 
         const order = {
             ingredients : this.state.totalPrice,
@@ -135,7 +135,22 @@ class BurgerBuilder extends Component{
         })
         .catch(error => {
             this.setState({loading:false,purchasing:false});
+        }); */
+
+        const queryParams = [];
+        for (let i in this.state.ingredients){
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+
+        queryParams.push('price=' + this.state.totalPrice);
+        const queryString = queryParams.join('&');
+
+        this.props.history.push({
+            pathname : '/checkout',
+            search: '?' + queryString
         });
+
+
     }
 
 
