@@ -16,12 +16,14 @@ import thunk from 'redux-thunk';
 //Acá podría usar devTools pero me da flojera
 //hay que crear los enhancers, combinarlos, etc
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const rootReducer = combineReducers({
     burgerBuilder:burgerBuilderReducer,
     order: orderReducer
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 const app = (
     <Provider store={store}>
