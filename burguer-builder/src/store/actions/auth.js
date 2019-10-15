@@ -7,10 +7,11 @@ export const authStart = () => {
     }
 };
 
-export const authSuccess = (authData) => {
+export const authSuccess = (token, userId) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
-        authData:authData
+        idToken: token,
+        userId: userId
     }
 };
 
@@ -21,7 +22,21 @@ export const authFail = (error) => {
     }
 };
 
-export const auth = (email, password) => {
+export const authLogout = () => {
+    return {
+        type: actionTypes.AUTH_LOGOUT
+    }
+}
+
+export const checkAuthTimeout = (expirationTime) => {
+    return dispatch => {
+        setTimeout(()=>{
+            dispatch(authLogout());
+        }, expirationTime * 1000);
+    }
+}
+
+export const auth = (email, password, isSignup) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
@@ -29,15 +44,23 @@ export const auth = (email, password) => {
             password,
             returnSecureToken: true
         }
+        let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAQxosPzM7CX2PDIKolc7PPM-S5K6WZ8uo';
+        if(!isSignup){
+            url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAQxosPzM7CX2PDIKolc7PPM-S5K6WZ8uo';
+        }
         axios.post(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAQxosPzM7CX2PDIKolc7PPM-S5K6WZ8uo',
+        url,
         authData)
         .then(response => {
-            dispatch(authSuccess(response.data));
+            console.log(response);
+            dispatch(authSuccess(response.data.idToken, response.data.localId));
+            dispatch(checkAuthTimeout(response.data.expiresIn));
         })
         .catch(err=>{
-            console.log(err);
-            dispatch(authFail());
+            //console.log(err);
+            //axios envuelve el error que le retorne el endpoint en un objeto error
+            //hay que bucear en ese objeto hasta llegar al mensaje de error que trae el endpoint
+            dispatch(authFail(err.response.data.error));
         })
     }
 }
