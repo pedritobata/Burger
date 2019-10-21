@@ -115,7 +115,8 @@ class ContactData extends Component{
             //En producción se debe calcular el precio total  EN EL SERVIDOR!!
             //para que no vaya a ser manipulado por alguien en el frontend
             price : this.props.price,
-            orderData: formData
+            orderData: formData,
+            userId: this.props.userId
            
         }
 
@@ -224,7 +225,8 @@ const mapStateToProps = state => {
         ings: state.burgerBuilder.ingredients,
         price: state.burgerBuilder.totalPrice,
         loading: state.order.loading,
-        token: state.auth.token
+        token: state.auth.token,
+        userId: state.auth.userId
     };
 }
 

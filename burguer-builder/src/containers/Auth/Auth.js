@@ -45,9 +45,13 @@ class Auth extends React.Component{
      }
 
      componentDidMount(){
+         //console.log('[componentDidMount] this.props.isAuthenticated',this.props.isAuthenticated);
         if(!this.props.buildingBurger && this.props.authRedirectPath !== '/'){
             this.props.onSetAuthRedirectPath();
         }
+     }
+     componentDidUpdate(){
+       //console.log('[componentDidUpdate] this.props.authRedirectPath',this.props.authRedirectPath);
      }
 
      checkValidity(value, rules) {
@@ -112,7 +116,7 @@ class Auth extends React.Component{
 
 
     render(){
-
+       
         const formElementsArray = [];
         for(let key in this.state.controls){
             formElementsArray.push({
@@ -145,7 +149,9 @@ class Auth extends React.Component{
         }
 
         let redirectAuth = null
+       
         if(this.props.isAuthenticated){
+            
             redirectAuth = <Redirect to={this.props.authRedirectPath} />;
         }
 
@@ -156,9 +162,9 @@ class Auth extends React.Component{
                 <form onSubmit={this.submitHandler}>
                     {form}
                     <Button btnType="Success">SUBMIT</Button><br/>
-                    <Button btnType="Danger"
-                        clicked={this.switchAuthModeHandler}>SWITCH TO {this.state.isSignup?'SIGNIN':'SIGNUP'}</Button>
                 </form>
+                <Button btnType="Danger"
+                        clicked={this.switchAuthModeHandler}>SWITCH TO {this.state.isSignup?'SIGNIN':'SIGNUP'}</Button>
             </div>
         );
     }

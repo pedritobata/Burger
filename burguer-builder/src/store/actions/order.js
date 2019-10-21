@@ -66,10 +66,12 @@ export const fetchOrdersStart = () => {
 //Se crearon reglas en firebase para restringir acceso a recursos de la BD
 // ver en database=>reglas
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return  dispatch => {
         dispatch(fetchOrdersStart());
-        axios.get('orders.json?auth=' + token)
+        //estos query son aceptados por Firebase para filtrar por campos
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('orders.json' + queryParams)
         .then(res =>{
             const fetchedOrders = [];
             for(let key in res.data){
