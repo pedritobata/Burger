@@ -13,6 +13,9 @@ import orderReducer from './store/reducers/order';
 import authReducer from './store/reducers/auth';
 import thunk from 'redux-thunk';
 
+import createSagaMiddleware from 'redux-saga';
+import {logoutSaga} from './store/sagas/auth';
+
 
 //Acá podría usar devTools pero me da flojera
 //hay que crear los enhancers, combinarlos, etc
@@ -25,7 +28,14 @@ const rootReducer = combineReducers({
     auth: authReducer
 });
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+const sagaMiddleware = createSagaMiddleware();
+
+
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk,sagaMiddleware)));
+
+
+//se puede correr el saga a placer, pero lo logico seria correrlo cuando corresponda
+//sagaMiddleware.run(logoutSaga);
 
 const app = (
     <Provider store={store}>
