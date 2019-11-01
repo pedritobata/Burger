@@ -9,7 +9,7 @@ class OderSummary extends Component {
 
     //Implementamos este metodo solo para debuggear
     componentWillUpdate(){
-        console.log('[OrderSummary] willUpdate');
+        //console.log('[OrderSummary] willUpdate');
     }
 
     render(){

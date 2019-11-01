@@ -14,7 +14,9 @@ import authReducer from './store/reducers/auth';
 import thunk from 'redux-thunk';
 
 import createSagaMiddleware from 'redux-saga';
-import {logoutSaga} from './store/sagas/auth';
+import {watchAuth, watchBurgerBuilder} from './store/sagas';//No es necesario escribir index, ya que se busca este por defecto!!
+
+
 
 
 //Acá podría usar devTools pero me da flojera
@@ -36,6 +38,10 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk,sa
 
 //se puede correr el saga a placer, pero lo logico seria correrlo cuando corresponda
 //sagaMiddleware.run(logoutSaga);
+
+//ejecutamos el listener de los sagas para authentication
+sagaMiddleware.run(watchAuth);
+sagaMiddleware.run(watchBurgerBuilder);
 
 const app = (
     <Provider store={store}>
