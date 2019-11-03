@@ -14,7 +14,7 @@ import authReducer from './store/reducers/auth';
 import thunk from 'redux-thunk';
 
 import createSagaMiddleware from 'redux-saga';
-import {watchAuth, watchBurgerBuilder} from './store/sagas';//No es necesario escribir index, ya que se busca este por defecto!!
+import {watchAuth, watchBurgerBuilder, watchOrder} from './store/sagas';//No es necesario escribir index, ya que se busca este por defecto!!
 
 
 
@@ -42,6 +42,7 @@ const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk,sa
 //ejecutamos el listener de los sagas para authentication
 sagaMiddleware.run(watchAuth);
 sagaMiddleware.run(watchBurgerBuilder);
+sagaMiddleware.run(watchOrder);
 
 const app = (
     <Provider store={store}>

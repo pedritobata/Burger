@@ -1,7 +1,7 @@
 import {put} from 'redux-saga/effects';
 
 import * as actions from '../actions/index';
-import { delay } from 'redux-saga/effects';
+import { delay, call } from 'redux-saga/effects';
 import axios from 'axios';
 
 //redux saga es una alternativa a redux thunk para manejar el dispatching de acciones
@@ -12,9 +12,18 @@ import axios from 'axios';
 export function* logoutSaga(action){
     //yield hace que la instruccion que afecta se ejecute sincronamente y 
     //el siguiente yield esperará a que termine el anterior
+
+    /* 
     yield localStorage.removeItem('token');
     yield localStorage.removeItem('expirationDate');
-    yield localStorage.removeItem('userId');
+    yield localStorage.removeItem('userId'); 
+*/
+
+//usando call nos facilita la vida para hacer pruebas supuestamente
+    yield call([localStorage, 'removeItem'], 'token');
+    yield call([localStorage, 'removeItem'], 'expirationDate');
+    yield call([localStorage, 'removeItem'], 'userId');
+
 
     //put hace el dispatch del action
     yield put(actions.logoutSucceed()); 
